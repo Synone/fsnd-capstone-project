@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import datetime
+from datetime import datetime
 
 APP = Flask(__name__)
 APP.app_context().push()
@@ -24,6 +24,8 @@ class Books(db.Model):
     pages = db.Column(db.Integer)
     author_id = db.Column(db.Integer, db.ForeignKey('author.id'), nullable=False)
     status = db.Column(db.String(30), default='available')
+    author_gender = db.Column(db.String(30))
+    author_country = db.Column(db.String(80))
     def __repr__(self):
         return f"<Book: {self.id}, Title: {self.title}>"
     def short(self):
@@ -69,10 +71,11 @@ class Patrons(db.Model):
     def __repr__(self):
         return f"Patron: {self.id} - Name: {self.name}"
 
-book_lends = db.Table('book_lend', 
-    db.Column('id', db.Integer),
+book_lends = db.Table('book_loan_ticket', 
+    db.Column('id', db.Integer, primary_key=True),
     db.Column('book_id',db.Integer, db.ForeignKey('book.id'),primary_key=True),
     db.Column('patron_id',db.Integer, db.ForeignKey('patron.id'),primary_key=True),
-    db.Column('time_lend',db.DateTime, nullable=False, default=datetime.datetime.now()),
-    db.Column('return_date', db.DateTime)
+    db.Column('time_lend',db.String(80), default=datetime.now().strftime("%Y/%m/%d")),
+    db.Column('return_date', db.String(80)),
+    db.Column('status',db.String(80),default='active')
     )
