@@ -3,16 +3,22 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 import os
-APP = Flask(__name__)
-APP.app_context().push()
+
 # APP.config.from_object("config")
 db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
-APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
-APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(APP)
+# db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library2"
+# APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
+# APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# db = SQLAlchemy(APP)
 
-migrate = Migrate(APP, db, render_as_batch=False)
-
+# migrate = Migrate(APP, db, render_as_batch=False)
+db = SQLAlchemy()
+def setup_db(app, database_path=db_url):
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.app=app
+    db.init_app(app)
+    db.create_all()
 
 class Books(db.Model):
     __tablename__="book"

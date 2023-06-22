@@ -4,18 +4,18 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 from dotenv import load_dotenv, find_dotenv
-# from os import environ as env
+from os import environ as env
 import os
 
-# ENV_FILE = find_dotenv()
-# if ENV_FILE:
-#     load_dotenv(ENV_FILE)
-# AUTH0_DOMAIN = env.get("AUTH0_DOMAIN", 'fsnd-sony-dev.us.auth0.com')
-# API_IDENTIFIER = env.get("API_IDENTIFIER",'library')
-# ALGORITHMS =  env.get('ALGORITHMS',['RS256'])
-AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'fsnd-sony-dev.us.auth0.com')
-API_IDENTIFIER = os.getenv("API_IDENTIFIER",'library')
-ALGORITHMS =  os.getenv('ALGORITHMS',['RS256'])
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+AUTH0_DOMAIN = env.get("AUTH0_DOMAIN", 'fsnd-sony-dev.us.auth0.com')
+API_IDENTIFIER = env.get("API_IDENTIFIER",'library')
+ALGORITHMS =  env.get('ALGORITHMS',['RS256'])
+# AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'fsnd-sony-dev.us.auth0.com')
+# API_IDENTIFIER = os.getenv("API_IDENTIFIER",'library')
+# ALGORITHMS =  os.getenv('ALGORITHMS',['RS256'])
 ## AuthError Exception
 
 class AuthError(Exception):

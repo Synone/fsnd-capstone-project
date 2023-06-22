@@ -12,9 +12,11 @@ Flask-Cors==3.0.10
 Flask-Login==0.6.2
 Flask-Migrate==4.0.4
 Flask-Moment==0.11.0
+Flask-Script==2.0.6
 Flask-SQLAlchemy==3.0.3
 Flask-WTF==0.14.3
 greenlet==2.0.2
+gunicorn==20.1.0
 importlib-metadata==6.7.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
@@ -43,4 +45,3 @@ Werkzeug==2.2.3
 wrapt==1.11.1
 WTForms==3.0.1
 zipp==3.15.0
-gunicorn==20.1.0
