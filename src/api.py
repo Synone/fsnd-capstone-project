@@ -24,14 +24,20 @@ def after_request(response):
 
 
 # ROUTES
+@APP.route('/')
+def welcome_page():
+    return jsonify({
+        "message":"Welcome to Flask App",
+        "status":"OK"
+    }),200
+
+
 @APP.route('/books', methods=['GET'])
 def get_all_books():
     try:
         book_data = Books.query.order_by(Books.id).all()
-        print(book_data)
     except:
         abort(404)
-    
     return jsonify({
         "message":"OK",
         "books": [book.short() for book in book_data],
