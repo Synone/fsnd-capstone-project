@@ -6,7 +6,7 @@ import os
 APP = Flask(__name__)
 APP.app_context().push()
 # APP.config.from_object("config")
-db_url = os.getenv('DATABASE_URL','postgres://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
+db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
 APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
 APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(APP)
