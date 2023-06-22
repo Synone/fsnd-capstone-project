@@ -46,23 +46,25 @@ def create_app(test_config=None):
             abort(404)
         return jsonify({
             "message":"OK",
-            "books": [book.short() for book in book_data],
+            "data": [book.short() for book in book_data],
             "success": True
         }),200
         
 
-    @app.route('/book-detail', methods=['GET'])
+    @app.route('/book-detail/<int:book_id>', methods=['GET'])
     @requires_auth('get:book-detail')
-    def get_all_books_detail(jwt):
+    def get_all_books_detail(jwt,book_id):
+        result = {}
         try:
-            book_data = Books.query.order_by(Books.id).all()
+            book_data = Books.query.filter(Books.id==book_id).first()
         except:
             abort(404)
         return jsonify({
-            "message":"OK",
-            "books": [book.long() for book in book_data],
-            "success": True
-        }),200
+            "message":"Query book detail successfully",
+            "status":"success",
+            "statusCode":200,
+            "data": book_data.long()
+            }),200
 
 
     @app.route('/books', methods=['POST'])
@@ -145,16 +147,15 @@ def create_app(test_config=None):
             db.session.rollback()
             print(sys.exc_info())
             abort(404)
-            
+
             
     @app.route('/books/<int:book_id>', methods=['POST'])
     @requires_auth('update:books')
-    def update_book(book_id, jwt):
+    def update_book(jwt, book_id):
         # Allow updating numbers of book in lib, status, days_for_borrow
         body = request.get_json()
         try:
             target_book = Books.query.filter_by(id=book_id).first()
-            print(type(target_book))
             if target_book is None:
                 abort(404)
             else:
@@ -168,8 +169,8 @@ def create_app(test_config=None):
             print(sys.exc_info())
         db.session.close()
         return jsonify({
-            'message':'testing',
-            'status':'OK'
+            'message':'Update book successfully',
+            'status': 200
         })
         
         
@@ -232,7 +233,49 @@ def create_app(test_config=None):
         }),201
         
         
+    @app.route('/patrons', methods=['GET'])
+    def get_all_patrons():
+        try:
+            all_patron = Patrons.query.order_by(Patrons.id).all()
+        except:
+            abort(404)
+        return jsonify({
+            "message":"OK",
+            "success":True,
+            "data": [ pat.short() for pat in all_patron]
+        }),200
         
+    @app.route('/patrons/<int:patron_id>', methods=['GET'])
+    def get_patron_detail(patron_id):
+        try:
+            patron = Patrons.query.filter_by(id=patron_id).first()
+        except:
+            abort(404)
+        return jsonify({
+            "message":"OK",
+            "success":True,
+            "data": patron.long()
+        })
+        pass
+    @app.route('/patrons/<int:patron_id>', methods=['DELETE'])
+    def delete_patron(patron_id):
+        try:
+            patron =  Patrons.query.filter_by(id=patron_id).first()
+            if patron is None:
+                abort(404)
+                
+            db.session.delete(patron)
+            db.session.commit()
+            return jsonify({
+            "message":"Delete successfully",
+            "success":False
+        }),200
+        except:
+            db.session.rollback()
+            print(sys.exc_info())
+            abort(500)
+        
+    
     # Error Handling
 
     @app.errorhandler(422)

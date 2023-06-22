@@ -5,8 +5,8 @@ from datetime import datetime
 import os
 
 # APP.config.from_object("config")
-db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
-# db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library2"
+# db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
+db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library2" #for local running
 # APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
 # APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # db = SQLAlchemy(APP)
@@ -78,7 +78,23 @@ class Patrons(db.Model):
     books_borrowing = db.Column(db.Integer)
     def __repr__(self):
         return f"Patron: {self.id} - Name: {self.name}"
-
+    def long(self):
+            return {
+                'id': self.id,
+                'name': self.name,
+                'date_of_birth': self.date_of_birth,
+                'gender': self.gender,
+                'address': self.address,
+                'books_borrowed': self.books_borrowed,
+                'membership_time': self.membership_time,
+                'books_borrowing':self.books_borrowing
+            }
+    def short(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'membership_time': self.membership_time
+        }
 book_lends = db.Table('book_loan_ticket', 
     db.Column('id', db.Integer, primary_key=True),
     db.Column('book_id',db.Integer, db.ForeignKey('book.id'),primary_key=True),
