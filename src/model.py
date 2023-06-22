@@ -2,11 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
-
+import os
 APP = Flask(__name__)
 APP.app_context().push()
-APP.config.from_object("config")
-
+# APP.config.from_object("config")
+db_url = os.getenv('DATABASE_URL','postgres://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
+APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
+APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(APP)
 
 migrate = Migrate(APP, db, render_as_batch=False)

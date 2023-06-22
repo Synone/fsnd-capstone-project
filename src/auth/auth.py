@@ -7,14 +7,15 @@ from dotenv import load_dotenv, find_dotenv
 from os import environ as env
 
 
-ENV_FILE = find_dotenv()
-if ENV_FILE:
-    load_dotenv(ENV_FILE)
-AUTH0_DOMAIN = env.get("AUTH0_DOMAIN", 'fsnd-sony-dev.us.auth0.com')
-API_IDENTIFIER = env.get("API_IDENTIFIER",'library')
-ALGORITHMS =  env.get('ALGORITHMS',['RS256'])
-
-
+# ENV_FILE = find_dotenv()
+# if ENV_FILE:
+#     load_dotenv(ENV_FILE)
+# AUTH0_DOMAIN = env.get("AUTH0_DOMAIN", 'fsnd-sony-dev.us.auth0.com')
+# API_IDENTIFIER = env.get("API_IDENTIFIER",'library')
+# ALGORITHMS =  env.get('ALGORITHMS',['RS256'])
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'fsnd-sony-dev.us.auth0.com')
+API_IDENTIFIER = os.getenv("API_IDENTIFIER",'library')
+ALGORITHMS =  env.getenv('ALGORITHMS',['RS256'])
 ## AuthError Exception
 
 class AuthError(Exception):
