@@ -15,7 +15,7 @@ import os
 # ALGORITHMS =  env.get('ALGORITHMS',['RS256'])
 AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN', 'fsnd-sony-dev.us.auth0.com')
 API_IDENTIFIER = os.getenv("API_IDENTIFIER",'library')
-ALGORITHMS =  env.getenv('ALGORITHMS',['RS256'])
+ALGORITHMS =  os.getenv('ALGORITHMS',['RS256'])
 ## AuthError Exception
 
 class AuthError(Exception):
