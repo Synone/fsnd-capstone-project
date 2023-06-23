@@ -115,14 +115,8 @@
 }
 ```
 
-- `GET /patrons`
-- Implements similar as books'endpoints
-- `POST /patron`
-- Implements similar as books'endpoints
-- `GET /patron-detail/patron_id`
-- Implements similar as books'endpoints
-- `DELETE /patrons/patron_id`
-- Implements similar as books'endpoints
+- Implements similar as books'endpoints:
+  `GET /patrons`, `POST /patron`, `GET /patron-detail/patron_id`, `DELETE /patrons/patron_id`
 
 `POST /book-loan`
 

@@ -9,10 +9,13 @@ from auth.auth import AuthError, requires_auth
 from datetime import datetime, timedelta
 
 
-def create_app(test_config=None):
+def create_app(db_URI="",test_config=None):
     app = Flask(__name__)
-    app.app_context().push()
-    setup_db(app)
+    # app.app_context().push()
+    if db_URI:
+        setup_db(app,db_URI)
+    else:
+        setup_db(app)
     CORS(app)
     
     
@@ -89,11 +92,10 @@ def create_app(test_config=None):
             )
                 db.session.add(new_author)
                 db.session.commit()
-                print('PASSS')
             except:
                 db.session.rollback()
                 print(sys.exc_info())
-                abort(500)
+                abort(400)
         try:
             new_author = Author.query.filter(Author.name == body['author']).first()
             author_id = new_author.id
@@ -125,7 +127,11 @@ def create_app(test_config=None):
                     "statusCode":201
                 }),201
             else:
-                abort(500)
+                return jsonify({
+                    "message":"Cannot process request due to inappropriate request payload",
+                    "status":"fail",
+                    "status_code":400
+                }),400
 
     @app.route('/books/<int:book_id>', methods=['DELETE'])
     @requires_auth("delete:books")
