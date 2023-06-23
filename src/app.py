@@ -1,10 +1,14 @@
 import os
-from flask import Flask, request, jsonify, abort
+from flask import (
+     Flask, request, jsonify, abort
+)
 from sqlalchemy import exc
 import json
 from flask_cors import CORS
 import sys
-from model import Books, Author, db, book_lends,Patrons, setup_db
+from model import (
+    Books, Author, db,Patrons, setup_db,LoanTicket
+)
 from auth.auth import AuthError, requires_auth
 from datetime import datetime, timedelta
 
@@ -16,7 +20,7 @@ def create_app(db_URI="",test_config=None):
         setup_db(app,db_URI)
     else:
         setup_db(app)
-    CORS(app)
+        CORS(app)
     
     
     @app.after_request
@@ -81,7 +85,7 @@ def create_app(db_URI="",test_config=None):
         if author is not None:
             author_id = author.id
             author.books_in_lib= author.books_in_lib + 1
-            db.session.commit()
+            author.update()
         else:
             try:
                 new_author = Author(
@@ -90,11 +94,10 @@ def create_app(db_URI="",test_config=None):
                 country=body['author_country'],
                 books_in_lib=1
             )
-                db.session.add(new_author)
+                new_author.insert()
                 db.session.commit()
             except:
                 db.session.rollback()
-                print(sys.exc_info())
                 abort(400)
         try:
             new_author = Author.query.filter(Author.name == body['author']).first()
@@ -112,13 +115,10 @@ def create_app(db_URI="",test_config=None):
                 author_gender=body['author_gender'],
                 author_country=body['author_country']
                 )
-                
-            db.session.add(new_book)
-            db.session.commit()
+            new_book.insert()
         except:
             error = True    
             db.session.rollback()
-            print(sys.exc_info())
         finally:
             db.session.close()
             if not error:
@@ -142,8 +142,7 @@ def create_app(db_URI="",test_config=None):
             if target_book is None:
                 abort(404)
             else:
-                db.session.delete(target_book)
-                db.session.commit()
+                target_book.delete()
                 return jsonify({
                     'message':'Remove book successfully',
                     'statusCode':202
@@ -151,7 +150,6 @@ def create_app(db_URI="",test_config=None):
         except:
             error= True
             db.session.rollback()
-            print(sys.exc_info())
             abort(404)
 
             
@@ -168,11 +166,10 @@ def create_app(db_URI="",test_config=None):
                 target_book.days_for_borrow = body['days_for_borrow']
                 target_book.status = body['status']
                 target_book.numbers_in_stock = body['numbers_in_stock']
-                db.session.commit()
+                target_book.update()
         except:
             db.session.rollback()
             abort(404)
-            print(sys.exc_info())
         db.session.close()
         return jsonify({
             'message':'Update book successfully',
@@ -190,17 +187,18 @@ def create_app(db_URI="",test_config=None):
         ticket_created_time = datetime.now()
         return_date = ticket_created_time + timedelta(days=days_for_borrow)
         try:
-            statement = book_lends.insert().values(book_id=body['book_id'],patron_id=body['patron_id'], 
-                                                time_lend = ticket_created_time.strftime("%Y/%m/%d"),
-                                                return_date = return_date.strftime("%Y/%m/%d"),
-                                                status = 'active'
-                                                )
-            db.session.execute(statement)
-            db.session.commit()
+            new_loan_ticket = LoanTicket(
+                book_id=body['book_id'],
+                patron_id=body['patron_id'],
+                time_lend = ticket_created_time.strftime("%Y/%m/%d"),
+                return_date = return_date.strftime("%Y/%m/%d"),
+                status = 'active'
+            )
+            new_loan_ticket.insert()
         except:
             db.session.rollback()
-            error=True
             print(sys.exc_info())
+            error=True
         finally:
             if not error:
                 db.session.close()
@@ -225,11 +223,9 @@ def create_app(db_URI="",test_config=None):
                 membership_time=body['membership_time'],
                 books_borrowing=0
             )
-            db.session.add(new_patron)
-            db.session.commit()
+            new_patron.insert()
         except:
             db.session.rollback()
-            print(sys.exc_info())
             abort(500)
         return jsonify({
             "message": "Added new patron successfully", 
@@ -269,9 +265,7 @@ def create_app(db_URI="",test_config=None):
             patron =  Patrons.query.filter_by(id=patron_id).first()
             if patron is None:
                 abort(404)
-                
-            db.session.delete(patron)
-            db.session.commit()
+            patron.delete()
             return jsonify({
             "message":"Delete successfully",
             "success":False

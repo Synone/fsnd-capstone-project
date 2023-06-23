@@ -5,8 +5,8 @@ from datetime import datetime
 import os
 
 # APP.config.from_object("config")
-db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
-# db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library_test" #for local running
+# db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
+db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library_test" #for local running
 # APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
 # APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # db = SQLAlchemy(APP)
@@ -56,6 +56,16 @@ class Books(db.Model):
             'status':self.status,
             'days_for_borrow':self.days_for_borrow
         }
+        
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 class Author(db.Model):
     __tablename__="author"
     id = db.Column(db.Integer, primary_key=True)
@@ -66,7 +76,14 @@ class Author(db.Model):
     book_a = db.relationship('Books',backref='_author',lazy=True)
     def __repr__(self):
         return f"<Author: {self.id}, Name: {self.name}>"
-    
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
     
 class Patrons(db.Model):
     __tablename__="patron"
@@ -97,11 +114,26 @@ class Patrons(db.Model):
             'name': self.name,
             'membership_time': self.membership_time
         }
-book_lends = db.Table('book_loan_ticket', 
-    db.Column('id', db.Integer, primary_key=True),
-    db.Column('book_id',db.Integer, db.ForeignKey('book.id'),primary_key=True),
-    db.Column('patron_id',db.Integer, db.ForeignKey('patron.id'),primary_key=True),
-    db.Column('time_lend',db.String(80), default=datetime.now().strftime("%Y/%m/%d")),
-    db.Column('return_date', db.String(80)),
-    db.Column('status',db.String(80),default='active')
-    )
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    def update(self):
+        db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+class LoanTicket(db.Model):
+    __tablename__="book_loan"
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer,db.ForeignKey('book.id'),primary_key=True )
+    patron_id = db.Column(db.Integer, db.ForeignKey('patron.id'),primary_key=True)
+    time_lend = db.Column(db.String(80),default=datetime.now().strftime("%Y/%m/%d"))
+    return_date = db.Column(db.String(80))
+    status = db.Column(db.String(80),default='active')
+    def __repr__(self):
+        return f"Ticket: {self.id} - return-date: {self.return_date}"
+    def insert(self):
+         db.session.add(self)
+         db.session.commit()
+    
