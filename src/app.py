@@ -135,7 +135,7 @@ def create_app(db_URI="",test_config=None):
 
     @app.route('/books/<int:book_id>', methods=['DELETE'])
     @requires_auth("delete:books")
-    def remove_book(book_id):
+    def remove_book(jwt,book_id):
         error = False
         try:
             target_book = Books.query.filter(Books.id==book_id).first()

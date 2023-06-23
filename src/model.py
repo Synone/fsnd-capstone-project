@@ -6,7 +6,7 @@ import os
 
 # APP.config.from_object("config")
 db_url = os.getenv('DATABASE_URL','postgresql://admin:cDIhaMPJDvfyPdVKHN3zmjvZf9DP1svG@dpg-ci81v76nqql0ldf4vrdg-a/librarydb_500r')
-# db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library2" #for local running
+# db_url = "postgresql+psycopg2://postgres:03031998@localhost:5432/library_test" #for local running
 # APP.config["SQLALCHEMY_DATABASE_URI"]  = db_url
 # APP.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # db = SQLAlchemy(APP)

@@ -9,10 +9,11 @@ from model import db
 
 database_test_name  = os.getenv('DATABASE_TEST_NAME','library_test')
 # for local testing
-db_user = "postgres"
-db_password = "03031998"
-db_host = "localhost:5432"
-token = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNXemNmRXdUb2Ywc2pfdWZLbzNNcSJ9.eyJ1c2VyLWVtYWlsIjoic29uaWU5MjMzQGdtYWlsLmNvbSIsImlzcyI6Imh0dHBzOi8vZnNuZC1zb255LWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjQ2NzMyZDdjM2YzYThlMDhhY2ZjMjM0IiwiYXVkIjoibGlicmFyeSIsImlhdCI6MTY4NzQ4ODMwNCwiZXhwIjoxNjg3NDk1NTA0LCJhenAiOiJnY1NGUUxvbk5oNmV2UHRyRFRLUHpod2FXcUd1T0J5WCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmJvb2tzIiwiZGVsZXRlOnBhdHJvbiIsImdldDphbGwtcGF0cm9ucyIsImdldDpib29rLWRldGFpbCIsImdldDpib29rcyIsImdldDpwYXRyaW9uLWRldGFpbCIsInBvc3Q6Ym9vay1sb2FuLXRpY2tldCIsInBvc3Q6Ym9va3MiLCJwb3N0OnBhdHJvbiIsInVwZGF0ZTpib29rcyJdfQ.xhY5DsmLIcAtD-kgrOSKWtf35rVIrY97TFz6BfP40d6i9XK-Gwxb7F_7PYLnB4MRvrx1iSw_xYuOXgAAUOQDSeLCcXGNTmkrRgy852egfND5-99PpTVuBqU_I6vOvtj4mIFy_-PcWaH9XHWaP-MTtstrwLeMRWvP1B0uRKRsCpq3K3XCgDrRHe1Hr9_RKXwqikpad6NNmmuLn6N2K8Je1vKPxWjIivpT1XBEKLgZPwg8qwV5dB2gdmw_ZlzLZjg047mBSXu15n9DiTIqqqWWJOg2-z0PLpVkrN6aDFdmfOsKZN4S2ZblZ-tkLffFJqhA2_VNIQqXez3KhjD3ZIAdFA"
+db_user = "postgres" #replace with your db user
+db_password = "03031998" #replace with your db password for db user
+db_host = "localhost:5432" 
+token_admin = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNXemNmRXdUb2Ywc2pfdWZLbzNNcSJ9.eyJ1c2VyLWVtYWlsIjoic29uaWU5MjMzQGdtYWlsLmNvbSIsImlzcyI6Imh0dHBzOi8vZnNuZC1zb255LWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjQ2NzMyZDdjM2YzYThlMDhhY2ZjMjM0IiwiYXVkIjoibGlicmFyeSIsImlhdCI6MTY4NzQ4OTk3MiwiZXhwIjoxNjg3NTc2MzcyLCJhenAiOiJnY1NGUUxvbk5oNmV2UHRyRFRLUHpod2FXcUd1T0J5WCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmJvb2tzIiwiZGVsZXRlOnBhdHJvbiIsImdldDphbGwtcGF0cm9ucyIsImdldDpib29rLWRldGFpbCIsImdldDpib29rcyIsImdldDpwYXRyaW9uLWRldGFpbCIsInBvc3Q6Ym9vay1sb2FuLXRpY2tldCIsInBvc3Q6Ym9va3MiLCJwb3N0OnBhdHJvbiIsInVwZGF0ZTpib29rcyJdfQ.NPaN33eTXBP5bP3-9oEuvrR0G5oGMMgHf2WeqwQ7C6v2RsLUbAOm49oNDTTGHfnSSpL3qbrhUYZby-llucZsekLEiOlxvhAf1jD6_KGgiVmhU5185-Qz-hwwGLxmkeA6fRka0sa3TP3SFiMscjpp0Bc2xfeRdI4I5uuohUvI6qN_4eD69SnAYla_52FSlx7z1_PYVt7XNANUgmteHLtrZcKXKLwOmT531PC49W3_myxBKuuhMPnEvk-Rx5zL1oRnF24KT2M7pMfgWIAA7NhJtWq59n0NmmlOQPP_yhC6LPCvPDDuZRNGu216nlCd0RP1OHMm6mG_M100ukuVH_8RpA"
+toekn_patron ="Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNXemNmRXdUb2Ywc2pfdWZLbzNNcSJ9.eyJ1c2VyLWVtYWlsIjoidWRhY2l0eWJhcmlzdGFAZ21haWwuY29tIiwiaXNzIjoiaHR0cHM6Ly9mc25kLXNvbnktZGV2LnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NDcwNTllNDkzNDhlNjljNmNjYWM5ZjQiLCJhdWQiOiJsaWJyYXJ5IiwiaWF0IjoxNjg3NDkwNjg0LCJleHAiOjE2ODc1NzcwODQsImF6cCI6ImdjU0ZRTG9uTmg2ZXZQdHJEVEtQemh3YVdxR3VPQnlYIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Ym9va3MiLCJnZXQ6cGF0cmlvbi1kZXRhaWwiXX0.ouqtakV6YWfWTfJMlSHo9Lhrs4Nda9VEdYaKQr72CCnQkBwhd8FqsCtMhe3cLruW4OeYXWMnzyk9LDNoTgZ3_Zy83ztUpKFZRzWKYblkRxE-6oKz7uJR_vIxF-BSkZbjlJ78d1MZoneVZOxKVTJcCku2bbqejkvy__YGCD_Rpn8PF9mAOuPA5F752BMVHJ-ruKAe2_qC90YqE3RMGho1uo5YzRDaBXw8943zjzxdQfnX63JYkuwV1WlhE8dyZhgxpPD7w-BaxBjACcfoey3kTAwHJSng4wfJbl2EF3bd-fp5BsFyB6GmpNmz6BuBhhI9ys-pcmr8vaJ69z27cMfbpg"
 
 class LibraryTestCase(unittest.TestCase):
     
@@ -39,7 +40,11 @@ class LibraryTestCase(unittest.TestCase):
                         "status":"new",
                         "author_gender":"female"}
         self.headers = {
-            'Authorization': token,
+            'Authorization': token_admin,
+            'Content-Type': 'application/json'
+        }
+        self.headers_patron = {
+            'Authorization': toekn_patron,
             'Content-Type': 'application/json'
         }
     def tearDown(self):
@@ -61,6 +66,18 @@ class LibraryTestCase(unittest.TestCase):
         self.assertEqual(res.status_code,400)
         self.assertEqual(data['message'],"Cannot process request due to inappropriate request payload")
         
+    def test_delete_book_with_libowner_token(self):
+        res = self.client().delete('/books/2', headers=self.headers)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code,202)
+        self.assertEqual(data['message'],'Remove book successfully')
+        
+    def test_403_unauthorized_post_book_with_patron_token(self):
+        res = self.client().post('/books',headers = self.headers_patron, json=self.new_book)
+        self.assertEqual(res.status_code,403)
+    def test_403_unauthorized_delete_book_with_patron_token(self):
+        res = self.client().delete('/books/2',headers = self.headers_patron)
+        self.assertEqual(res.status_code,403)
     
     
 if __name__ == "__main__":
