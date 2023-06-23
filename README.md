@@ -1,5 +1,8 @@
 # Library management - Backend Service Only
 
+I developed this project to make use of the knowledge you acquired in this nanodegree and hence gain confidence in these skills.
+-The application is build for library management. In order to manage a library, there are a few resources need to be managed, such as Books with according Authors, and people who come to Library to read and borrow books, Patrons. Each one has its own roles in the concept, such as the Owner of the library, the librarians, and the patrons. This application will allow certain actions and accesses according to the role the member is.
+
 - The application provides endpoints to manage library database, including books, authors, patrons and book loan tickets.
 - There are 3 main roles:
   1. Owner: who has all permission (ADD, DELETE, UPDATE books, GET book details; ADD and DELETE patron membership, GET patron details).
@@ -132,3 +135,15 @@
 # Testing
 
 - Please create a 'library_test' database and insert some recorsd for testing
+
+# Deploy on Render
+
+Go to https://dashboard.render.com/, create account and login.
+
+1. Choose New and select PostgreSQL to create new postgres database
+2. Next, create Web Service and connect to the project Github repository
+3. In Web Service, configure environment variables and DATABASE_URI which is Internal Database URL of the PostgreDB just created in Info tab of PostgreDB
+4. Next configure in setting of webservice
+5. Build command of webservice: pip install -r requirements.txt
+6. Start command: gunicorn app:app
+7. After all, click Manual deploy and choose deploy options
